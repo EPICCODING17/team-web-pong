@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Separated Project</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Prompt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <!-- Font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <!-- Boxicons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+    <script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+        extend: {
+            fontFamily: { prompt: ["Prompt", "sans-serif"] },
+            colors: {
+            brand: {
+                blue: "#3c8cf3",
+                green: "#05be8a",
+                purple: "#745af2",
+                red: "#ef5350",
+                gray: "#6c757d",
+            },
+            },
+        },
+        },
+    };
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Folder tab 3D animation */
+        .file { transform-style: preserve-3d; }
+        .doc-tab-btn:hover .work-4, .doc-sub-btn:hover .work-4 { transform: rotateX(-20deg); }
+        .doc-tab-btn:hover .work-3, .doc-sub-btn:hover .work-3 { transform: rotateX(-30deg); }
+        .doc-tab-btn:hover .work-2, .doc-sub-btn:hover .work-2 { transform: rotateX(-38deg); }
+        .doc-tab-btn:hover .work-1, .doc-sub-btn:hover .work-1 { transform: rotateX(-46deg) translateY(1px); }
+        .doc-tab-btn.blue:hover .work-1,    .doc-sub-btn.blue:hover .work-1    { box-shadow: inset 0 3px 6px #93c5fd, inset 0 -3px 6px #2563eb; }
+        .doc-tab-btn.amber:hover .work-1,   .doc-sub-btn.amber:hover .work-1   { box-shadow: inset 0 3px 6px #fcd34d, inset 0 -3px 6px #d97706; }
+        .doc-tab-btn.purple:hover .work-1,  .doc-sub-btn.purple:hover .work-1  { box-shadow: inset 0 3px 6px #d8b4fe, inset 0 -3px 6px #9333ea; }
+        .doc-tab-btn.emerald:hover .work-1, .doc-sub-btn.emerald:hover .work-1 { box-shadow: inset 0 3px 6px #6ee7b7, inset 0 -3px 6px #059669; }
+    </style>
+</head>
+<body class="font-prompt bg-pattern text-gray-800 dark:text-gray-100 h-screen overflow-hidden">
+    <nav id="navbar" class="theme-nav fixed top-4 right-4 left-4 z-40 px-5 py-3 flex items-center justify-between transition-all duration-300">
+    <div class="flex items-center gap-4">
+        <button id="menuToggle" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100/50 dark:hover:bg-gray-800/50 text-gray-500 dark:text-gray-300 transition-all duration-300" title="เปิด/ปิดเมนู">
+        <i class="bx bx-customize text-2xl"></i>
+        </button>
+        <div class="flex items-center gap-3">
+        
+        <div class="w-10 h-10 flex items-center justify-center overflow-hidden">
+            <img id="system-LogoB" src="" alt="Logo" class="w-full h-full object-contain" />
+        </div>
+
+        <span class="font-medium text-lg tracking-wide hidden sm:block text-gray-800 dark:text-white" id="system-NameEngB"></span>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-2 sm:gap-3">
+        <div class="relative">
+        <button id="notifBellBtn" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-all duration-300 relative" title="การแจ้งเตือน">
+            <i id="notifBellIcon" class="bx bx-bell text-xl text-gray-500 dark:text-gray-300"></i>
+            <span id="notifBadge" class="notif-badge">0</span>
+            <span id="bellSpinnerRing" class="bell-spinner-ring"></span>
+        </button>
+
+        <div id="notifDropdownMenu" class="dropdown-menu absolute right-0 mt-3 w-80 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl shadow-xl z-50 p-2">
+            <div class="flex items-center justify-between px-3 py-2">
+            <h3 class="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest">การแจ้งเตือน</h3>
+            <button id="notifClearAllBtn" class="text-[11px] text-brand-blue hover:underline font-medium hidden">ล้างทั้งหมด</button>
+            </div>
+            <div id="notifList" class="notif-dropdown">
+            <div id="notifEmpty" class="notif-empty">
+                <i class='bx bx-bell-off'></i> ไม่มีการแจ้งเตือน
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="relative">
+        <button id="settingsDropdownBtn" class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-all duration-300 relative" title="การตั้งค่าการแจ้งเตือน">
+            <i class="bx bx-cog text-xl text-gray-500 dark:text-gray-300"></i>
+            <span class="absolute top-2 right-2 w-2 h-2 bg-brand-red rounded-full"></span>
+        </button>
+        
+        <div id="settingsDropdownMenu" class="dropdown-menu absolute right-0 mt-3 w-64 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl shadow-xl z-50 p-2">
+            <h3 class="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-3 py-2">การตั้งค่าด่วน</h3>
+            <div class="space-y-1">
+            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div class="flex items-center gap-3">
+                <i class='bx bx-moon text-lg text-brand-purple'></i>
+                <span class="text-sm font-medium">โหมดมืด</span>
+                </div>
+                <button class="dark-toggle-btn w-11 h-6 rounded-full bg-gray-300 dark:bg-brand-purple relative transition-colors duration-300 cursor-pointer">
+                <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform duration-300 ease-in-out dark:translate-x-[20px] shadow-md"></div>
+                </button>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div class="flex items-center gap-3">
+                <i class='bx bx-bell text-lg text-brand-green'></i>
+                <span class="text-sm font-medium">การแจ้งเตือน</span>
+                </div>
+                <button id="notifyToggleBtn" onclick="toggleNotify()" class="w-11 h-6 rounded-full bg-gray-300 dark:bg-gray-600 relative transition-colors cursor-pointer">
+                <div id="notifyToggleKnob" class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all shadow-md"></div>
+                </button>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div class="flex items-center gap-3">
+                <i id="soundIcon" class='bx bx-volume-full text-lg text-brand-red'></i>
+                <span class="text-sm font-medium">เสียงแจ้งเตือน</span>
+                </div>
+                <button id="soundToggleBtn" onclick="toggleSound()" class="w-11 h-6 rounded-full bg-gray-300 dark:bg-gray-600 relative transition-colors cursor-pointer">
+                <div id="soundToggleKnob" class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all shadow-md"></div>
+                </button>
+            </div>
+
+            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div class="flex items-center gap-3">
+                <i class='bx bx-refresh text-lg text-brand-blue'></i>
+                <span class="text-sm font-medium">ข้อมูลแบบเรียลไทม์</span>
+                </div>
+                <button id="realtimeToggleBtn" class="w-11 h-6 rounded-full bg-gray-300 dark:bg-gray-600 relative transition-colors cursor-pointer">
+                <div id="realtimeToggleCircle" class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-all shadow-md"></div>
+                </button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="w-px h-6 bg-gray-200 dark:bg-gray-700 mx-1 sm:mx-2 hidden sm:block"></div>
+
+        <div class="relative">
+        <button id="profileDropdownBtn" class="flex items-center gap-2 sm:gap-3 p-1 sm:pr-3 rounded-full hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-all duration-300 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:outline-none">
+            
+            <div class="relative inline-block">
+            
+            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-[#05be8a] to-emerald-400 flex items-center justify-center shadow-md text-white overflow-hidden">
+                <img id="header-profile-img" src="" class="w-full h-full object-cover hidden">
+                <i id="header-profile-icon" class="bx bxs-user text-sm sm:text-lg"></i>
+            </div>
+            
+            <span id="header-status-dot" class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full transition-colors duration-300"></span>
+            </div>
+
+            <div class="hidden sm:block text-left">
+            <p id="header-profile-name" class="text-[13px] font-semibold text-gray-800 dark:text-white leading-tight">Admin</p>
+            <p id="header-profile-status" class="text-[10px] text-gray-500 dark:text-gray-400">Online</p>
+            </div>
+        </button>
+
+        <div id="profileDropdownMenu" class="dropdown-menu absolute right-0 mt-3 w-56 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl shadow-xl z-50 p-2">
+            <div class="px-3 py-2 border-b border-gray-100 dark:border-gray-700 mb-2">
+            <p id="dropdown-user-name" class="text-sm font-semibold text-gray-800 dark:text-white">Admin User</p>
+            <p id="dropdown-user-email" class="text-xs text-gray-500 dark:text-gray-400">admin@example.com</p>
+            </div>
+
+            <h3 class="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-3 py-1 mt-1">
+            การตั้งค่าบัญชี
+            </h3>
+            <div class="space-y-1 mb-2">
+            <button class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-brand-blue/10 dark:hover:bg-brand-blue/20 transition-colors text-gray-700 dark:text-gray-300 text-sm font-medium" onclick="openSheet('profileSheet')">
+                <i class="bx bx-user-circle text-brand-blue text-lg"></i>แก้ไขข้อมูลส่วนตัว
+            </button>
+            </div>
+
+            <h3 class="text-[10px] font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest px-3 py-1 mt-1 border-t border-gray-100 dark:border-gray-700 pt-2">
+            สถานะ
+            </h3>
+            <div class="space-y-1 mb-2">
+            <button onclick="changeUserStatus('online')" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors text-gray-700 dark:text-gray-300 text-sm">
+                <span id="status-dot-online" class="w-2 h-2 rounded-full bg-green-500"></span>กำลังใช้งาน
+            </button>
+            
+            <button onclick="changeUserStatus('offline')" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors text-gray-700 dark:text-gray-300 text-sm">
+                <span id="status-dot-offline" class="w-2 h-2 rounded-full bg-yellow-500"></span>ออฟไลน์
+            </button>
+            
+            <button onclick="changeUserStatus('dnd')" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors text-gray-700 dark:text-gray-300 text-sm">
+                <span id="status-dot-dnd" class="w-2 h-2 rounded-full bg-red-500"></span>ห้ามรบกวน
+            </button>
+            </div>
+
+            <div class="border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+            <button onclick="logoutUsers();" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition-colors text-sm font-medium">
+                <i class="bx bx-log-out text-lg"></i>ออกจากระบบ
+            </button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </nav>
+
+    <div id="sidebarOverlay" class="sidebar-overlay lg:hidden"></div>
+
+    <main id="mainContent" class="transition-all duration-300 pt-[100px] pb-[100px] px-4 lg:pt-[110px] lg:pb-10 lg:px-8 h-screen overflow-y-auto">
+        <div id="page-dashboard" class="page-section hidden">
+        <div class="card-box p-6 shadow-sm border border-gray-100 dark:border-gray-800 theme-sidebar">
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+            <div>
+                <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-2 text-slate-800 dark:text-white">
+                <i class='bx bx-file text-[var(--bs-blue)]'></i>ลงรับหนังสือ
+                </h2>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">จัดการเอกสารที่รับเข้าระบบและเกษียณเอกสาร</p>
+            </div>
+            <button id="btnAddDocument" class="hidden inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-[#3c8cf3] to-blue-400 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all hover:scale-[1.03] active:scale-95"
+                onclick="openDocForm();">
+                <i class='bx bx-plus text-lg'></i>ลงรับเอกสารใหม่
+            </button>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3 mb-5">
+
+            <div class="relative overflow-hidden flex flex-col justify-between p-4 rounded-2xl border-2 transition-all duration-200 hover:-translate-y-0.5 min-h-[90px]"
+                style="background:rgba(var(--bs-blue-rgb),0.08);border-color:rgba(var(--bs-blue-rgb),0.35)">
+                <div>
+                <div id="docStatTotal" class="text-[22px] font-bold leading-tight" style="color:var(--bs-blue)">0</div>
+                <div class="text-[11.5px] font-medium" style="color:var(--bs-blue)">เอกสารทั้งหมด</div>
+                </div>
+                <i class='bx bx-file absolute -right-2 -bottom-2 text-[56px]' style="color:rgba(var(--bs-blue-rgb),0.15)"></i>
+            </div>
+
+            <div class="relative overflow-hidden flex flex-col justify-between p-4 rounded-2xl border-2 transition-all duration-200 hover:-translate-y-0.5 min-h-[90px]"
+                style="background:rgba(var(--bs-yellow-rgb),0.08);border-color:rgba(var(--bs-yellow-rgb),0.35)">
+                <div>
+                <div id="docStatPending" class="text-[22px] font-bold leading-tight" style="color:var(--bs-yellow)">0</div>
+                <div class="text-[11.5px] font-medium" style="color:var(--bs-yellow)">รอดำเนินการ</div>
+                </div>
+                <i class='bx bx-time-five absolute -right-2 -bottom-2 text-[56px]' style="color:rgba(var(--bs-yellow-rgb),0.15)"></i>
+            </div>
+
+            <div class="relative overflow-hidden flex flex-col justify-between p-4 rounded-2xl border-2 transition-all duration-200 hover:-translate-y-0.5 min-h-[90px]"
+                style="background:rgba(var(--bs-purple-rgb),0.08);border-color:rgba(var(--bs-purple-rgb),0.35)">
+                <div>
+                <div id="docStatProcessing" class="text-[22px] font-bold leading-tight" style="color:var(--bs-purple)">0</div>
+                <div class="text-[11.5px] font-medium" style="color:var(--bs-purple)">กำลังดำเนินการ</div>
+                </div>
+                <i class='bx bx-loader-circle absolute -right-2 -bottom-2 text-[56px]' style="color:rgba(var(--bs-purple-rgb),0.15)"></i>
+            </div>
+
+            <div class="relative overflow-hidden flex flex-col justify-between p-4 rounded-2xl border-2 transition-all duration-200 hover:-translate-y-0.5 min-h-[90px]"
+                style="background:rgba(var(--bs-green-rgb),0.08);border-color:rgba(var(--bs-green-rgb),0.35)">
+                <div>
+                <div id="docStatDone" class="text-[22px] font-bold leading-tight" style="color:var(--bs-green)">0</div>
+                <div class="text-[11.5px] font-medium" style="color:var(--bs-green)">เสร็จสิ้น</div>
+                </div>
+                <i class='bx bx-check-circle absolute -right-2 -bottom-2 text-[56px]' style="color:rgba(var(--bs-green-rgb),0.15)"></i>
+            </div>
+
+            </div>
+
+            <!-- Folder Filter Buttons -->
+            <div id="docFilterBtns" class="flex flex-wrap gap-3 mb-5">
+
+              <!-- ทั้งหมด (Blue) - Active default -->
+              <button id="docFilter_all" onclick="openDocFolder('all','ทั้งหมด',this)"
+                class="doc-tab-btn blue group relative flex items-center gap-3 px-5 py-2.5 rounded-2xl border-2 transition-all hover:scale-[1.02] active:scale-95 border-[#3c8cf3] bg-blue-50/50 dark:bg-blue-900/20">
+                <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                  <div class="work-5 bg-blue-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-blue-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-blue-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                  <div class="work-4 absolute inset-[1px] bg-blue-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                  <div class="work-3 absolute inset-[1px] bg-blue-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                  <div class="work-2 absolute inset-[1px] bg-blue-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                  <div class="work-1 absolute bottom-0 bg-gradient-to-t from-blue-500 to-blue-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-blue-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-blue-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                </div>
+                <span class="text-[13px] font-semibold transition-colors text-[#3c8cf3] dark:text-blue-400">ทั้งหมด</span>
+              </button>
+
+              <!-- รอดำเนินการ (Amber) -->
+              <button id="docFilter_pending" onclick="openDocFolder('pending','รอดำเนินการ',this)"
+                class="doc-tab-btn amber group relative flex items-center gap-3 px-5 py-2.5 rounded-2xl border-2 transition-all hover:scale-[1.02] active:scale-95 border-gray-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/30 hover:border-[#ffa726]/40 hover:bg-amber-50/50 dark:hover:bg-amber-900/20">
+                <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                  <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-amber-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                  <div class="work-4 absolute inset-[1px] bg-amber-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                  <div class="work-3 absolute inset-[1px] bg-amber-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                  <div class="work-2 absolute inset-[1px] bg-amber-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                  <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-amber-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                </div>
+                <span class="text-[13px] font-semibold transition-colors text-slate-600 dark:text-slate-300 group-hover:text-[#ffa726]">รอดำเนินการ</span>
+              </button>
+
+              <!-- กำลังดำเนินการ (Purple) -->
+              <button id="docFilter_processing" onclick="openDocFolder('processing','กำลังดำเนินการ',this)"
+                class="doc-tab-btn purple group relative flex items-center gap-3 px-5 py-2.5 rounded-2xl border-2 transition-all hover:scale-[1.02] active:scale-95 border-gray-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/30 hover:border-[#a855f7]/40 hover:bg-purple-50/50 dark:hover:bg-purple-900/20">
+                <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                  <div class="work-5 bg-purple-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-purple-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-purple-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                  <div class="work-4 absolute inset-[1px] bg-purple-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                  <div class="work-3 absolute inset-[1px] bg-purple-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                  <div class="work-2 absolute inset-[1px] bg-purple-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                  <div class="work-1 absolute bottom-0 bg-gradient-to-t from-purple-500 to-purple-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-purple-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-purple-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                </div>
+                <span class="text-[13px] font-semibold transition-colors text-slate-600 dark:text-slate-300 group-hover:text-[#a855f7]">กำลังดำเนินการ</span>
+              </button>
+
+              <!-- เสร็จสิ้น (Emerald) -->
+              <button id="docFilter_done" onclick="openDocFolder('done','เสร็จสิ้น',this)"
+                class="doc-tab-btn emerald group relative flex items-center gap-3 px-5 py-2.5 rounded-2xl border-2 transition-all hover:scale-[1.02] active:scale-95 border-gray-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/30 hover:border-[#05be8a]/40 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20">
+                <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                  <div class="work-5 bg-emerald-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-emerald-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-emerald-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                  <div class="work-4 absolute inset-[1px] bg-emerald-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                  <div class="work-3 absolute inset-[1px] bg-emerald-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                  <div class="work-2 absolute inset-[1px] bg-emerald-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                  <div class="work-1 absolute bottom-0 bg-gradient-to-t from-emerald-500 to-emerald-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-emerald-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-emerald-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                </div>
+                <span class="text-[13px] font-semibold transition-colors text-slate-600 dark:text-slate-300 group-hover:text-[#05be8a]">เสร็จสิ้น</span>
+              </button>
+
+            </div>
+
+            <!-- Sub-folder Panel -->
+            <div id="docSubFolderPanel" class="hidden mb-5">
+              <div class="rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/30 p-4">
+                <div class="flex items-center gap-2 mb-4">
+                  <i id="docSubFolderIcon" class="bx bx-folder-open text-xl text-blue-500"></i>
+                  <span id="docSubFolderTitle" class="text-sm font-semibold text-gray-700 dark:text-gray-200">ทั้งหมด</span>
+                  <span class="text-xs text-gray-400 dark:text-gray-500 ml-1">/ เลือกปีที่ต้องการ</span>
+                  <button onclick="closeDocFolder()" class="ml-auto w-7 h-7 flex items-center justify-center rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition text-lg leading-none">×</button>
+                </div>
+
+                <!-- ทั้งหมด (Blue) -->
+                <div id="docSubGrid_all" class="doc-sub-grid hidden grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('all','2565')" class="doc-sub-btn blue group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-blue-400/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-blue-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-blue-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-blue-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-blue-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-blue-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-blue-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-blue-500 to-blue-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-blue-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-blue-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2565</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('all','2566')" class="doc-sub-btn blue group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-blue-400/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-blue-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-blue-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-blue-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-blue-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-blue-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-blue-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-blue-500 to-blue-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-blue-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-blue-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2566</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('all','2567')" class="doc-sub-btn blue group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-blue-400/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-blue-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-blue-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-blue-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-blue-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-blue-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-blue-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-blue-500 to-blue-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-blue-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-blue-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2567</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('all','2568')" class="doc-sub-btn blue group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-blue-400/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-blue-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-blue-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-blue-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-blue-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-blue-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-blue-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-blue-500 to-blue-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-blue-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-blue-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2568</span>
+                  </button>
+                </div>
+
+                <!-- รอดำเนินการ (Amber) -->
+                <div id="docSubGrid_pending" class="doc-sub-grid hidden grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('pending','2565')" class="doc-sub-btn amber group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-amber-400/50 hover:bg-amber-50/50 dark:hover:bg-amber-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-amber-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-amber-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-amber-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-amber-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-amber-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2565</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('pending','2566')" class="doc-sub-btn amber group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-amber-400/50 hover:bg-amber-50/50 dark:hover:bg-amber-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-amber-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-amber-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-amber-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-amber-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-amber-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2566</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('pending','2567')" class="doc-sub-btn amber group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-amber-400/50 hover:bg-amber-50/50 dark:hover:bg-amber-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-amber-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-amber-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-amber-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-amber-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-amber-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2567</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('pending','2568')" class="doc-sub-btn amber group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-amber-400/50 hover:bg-amber-50/50 dark:hover:bg-amber-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-amber-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-amber-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-amber-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-amber-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-amber-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-amber-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-amber-500 to-amber-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-amber-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-amber-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2568</span>
+                  </button>
+                </div>
+
+                <!-- กำลังดำเนินการ (Purple) -->
+                <div id="docSubGrid_processing" class="doc-sub-grid hidden grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('processing','2565')" class="doc-sub-btn purple group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-purple-400/50 hover:bg-purple-50/50 dark:hover:bg-purple-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-purple-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-purple-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-purple-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-purple-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-purple-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-purple-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-purple-500 to-purple-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-purple-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-purple-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2565</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('processing','2566')" class="doc-sub-btn purple group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-purple-400/50 hover:bg-purple-50/50 dark:hover:bg-purple-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-purple-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-purple-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-purple-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-purple-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-purple-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-purple-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-purple-500 to-purple-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-purple-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-purple-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2566</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('processing','2567')" class="doc-sub-btn purple group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-purple-400/50 hover:bg-purple-50/50 dark:hover:bg-purple-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-purple-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-purple-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-purple-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-purple-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-purple-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-purple-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-purple-500 to-purple-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-purple-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-purple-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2567</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('processing','2568')" class="doc-sub-btn purple group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-purple-400/50 hover:bg-purple-50/50 dark:hover:bg-purple-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-purple-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-purple-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-purple-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-purple-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-purple-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-purple-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-purple-500 to-purple-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-purple-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-purple-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2568</span>
+                  </button>
+                </div>
+
+                <!-- เสร็จสิ้น (Emerald) -->
+                <div id="docSubGrid_done" class="doc-sub-grid hidden grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('done','2565')" class="doc-sub-btn emerald group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-emerald-400/50 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-emerald-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-emerald-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-emerald-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-emerald-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-emerald-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-emerald-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-emerald-500 to-emerald-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-emerald-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-emerald-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2565</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('done','2566')" class="doc-sub-btn emerald group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-emerald-400/50 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-emerald-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-emerald-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-emerald-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-emerald-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-emerald-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-emerald-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-emerald-500 to-emerald-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-emerald-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-emerald-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2566</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('done','2567')" class="doc-sub-btn emerald group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-emerald-400/50 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-emerald-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-emerald-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-emerald-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-emerald-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-emerald-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-emerald-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-emerald-500 to-emerald-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-emerald-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-emerald-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2567</span>
+                  </button>
+                  <button onclick="typeof selectDocSubFolder==='function'&&selectDocSubFolder('done','2568')" class="doc-sub-btn emerald group relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-slate-800/30 hover:border-emerald-400/50 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/20 transition-all hover:scale-[1.02] active:scale-95">
+                    <div class="file relative w-[28px] h-[18px] origin-bottom [perspective:300px] flex-shrink-0">
+                      <div class="work-5 bg-emerald-600 w-full h-full origin-top rounded-sm rounded-tl-none transition-all ease duration-300 relative after:absolute after:content-[''] after:bottom-[99%] after:left-0 after:w-[9px] after:h-[2.5px] after:bg-emerald-600 after:rounded-t-sm before:absolute before:content-[''] before:-top-[2px] before:left-[8px] before:w-[2.5px] before:h-[2.5px] before:bg-emerald-600 before:[clip-path:polygon(0_35%,0%_100%,50%_100%)]"></div>
+                      <div class="work-4 absolute inset-[1px] bg-emerald-300 rounded-sm transition-all ease duration-300 origin-bottom select-none"></div>
+                      <div class="work-3 absolute inset-[1px] bg-emerald-200 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-2 absolute inset-[1px] bg-emerald-100 rounded-sm transition-all ease duration-300 origin-bottom"></div>
+                      <div class="work-1 absolute bottom-0 bg-gradient-to-t from-emerald-500 to-emerald-400 w-full h-[17px] rounded-sm rounded-tr-none after:absolute after:content-[''] after:bottom-[99%] after:right-0 after:w-[17px] after:h-[2.5px] after:bg-emerald-400 after:rounded-t-sm before:absolute before:content-[''] before:-top-[1.5px] before:right-[16px] before:size-[2px] before:bg-emerald-400 before:[clip-path:polygon(100%_14%,50%_100%,100%_100%)] transition-all ease duration-300 origin-bottom"></div>
+                    </div>
+                    <span class="text-[12px] font-semibold text-slate-700 dark:text-slate-300">ปี 2568</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="flex flex-col items-stretch gap-3 mb-5 md:flex-row md:flex-wrap md:items-center">
+            <div class="relative w-full md:flex-1 md:min-w-[220px] md:max-w-[360px]">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                <i class="bx bx-search text-slate-400 text-[18px]"></i>
+                </div>
+                <input type="search" id="docSearchInput"
+                class="custom-input w-full pl-10 pr-3 py-2"
+                placeholder="ค้นหาเลขที่, เรื่อง, หน่วยงาน..."
+                oninput="filterDoc()">
+            </div>
+
+            </div>
+
+            <div class="text-[13px] font-medium text-slate-500 dark:text-slate-400 mb-4">
+            จำนวน <span id="docTotalCount" class="font-bold text-slate-800 dark:text-slate-200">0</span> เอกสาร
+            </div>
+
+            <div id="docCardList" class="flex flex-col gap-3"></div>
+
+        </div>
+        </div>
+    </main>
+
+    <div id="toast">
+    <i class='bx bx-check-circle text-brand-green text-xl'></i>
+    <span id="toastMsg">แจ้งเตือน</span>
+    </div>
+    <div id="globalSheetOverlay" class="bottom-sheet-overlay" onclick="closeSheet()"></div>
+    <div id="menuSheet" class="bottom-sheet">
+    <div class="drag-handle" id="menuSheetDragHandle"></div>
+
+    <div class="px-5 pb-2 pt-3 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-3">
+        <div class="w-10 h-10 flex items-center justify-center overflow-hidden">
+            <img id="system-LogoA" src="" alt="Logo" class="w-full h-full object-contain" />
+        </div>
+        <div>
+            <p class="font-semibold text-[15px] tracking-wide text-gray-800 dark:text-white leading-tight" id="system-NameEngA"></p>
+            <p class="text-xs text-blue-500 dark:text-blue-400 font-medium" id="system-NameThaiA"></p>
+        </div>
+        </div>
+        <button onclick="closeSheet()" class="w-8 h-8 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition flex items-center justify-center">
+        <i class='bx bx-x text-xl text-gray-500 dark:text-gray-300'></i>
+        </button>
+    </div>
+
+    <div class="px-5 pb-3">
+        <div class="relative">
+        <i class="bx bx-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+        <input type="text" id="menuSearchInput" onkeyup="filterMenuCards()" class="custom-input w-full pl-10 pr-4 py-2.5" placeholder="ค้นหาเมนู...">
+        </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-4 pb-6 pt-2 space-y-5" id="menuScrollContent">
+
+        <div id="sidebarGroup1" class="menu-category-group">
+        <p id="sidebarTopic1" class="text-[10.5px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2.5 px-1 category-title">ภาพรวม (Dashboard)</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+            <button id="sidebarManu1" class="menu-card menu-item" data-page="dashboard" onclick="navigateTo('dashboard'); closeSheet();">
+            <div class="menu-card-icon" style="background:rgba(60,140,243,0.12)">
+                <i class='bx bxs-dashboard' style="color:var(--bs-blue)"></i>
+            </div>
+            <span class="menu-card-label">หน้าหลัก</span>
+            </button>
+        </div>
+        </div>
+
+        <div id="sidebarGroup2" class="menu-category-group">
+        <p id="sidebarTopic2" class="text-[10.5px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2.5 px-1 category-title">เอกสาร (Document)</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+            <button id="sidebarManu2" class="menu-card menu-item" data-page="documents" onclick="navigateTo('documents'); closeSheet();">
+            <div class="menu-card-icon" style="background:rgba(60,140,243,0.12)">
+                <i class='bx bx-clipboard' style="color:var(--bs-blue)"></i>
+            </div>
+            <span class="menu-card-label">ลงรับเอกสาร</span>
+            </button>
+        </div>
+        </div>
+
+        <div id="sidebarGroup3" class="menu-category-group">
+        <p id="sidebarTopic3" class="text-[10.5px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2.5 px-1 category-title">บุคลากร (People)</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+            <button id="sidebarManu3" class="menu-card menu-item" data-page="employees" onclick="navigateTo('employees'); closeSheet();">
+            <div class="menu-card-icon" style="background:rgba(60,140,243,0.12)">
+                <i class='bx bx-group' style="color:var(--bs-blue)"></i>
+            </div>
+            <span class="menu-card-label">พนักงาน</span>
+            </button>
+            <button id="sidebarManu4" class="menu-card menu-item" data-page="roles" onclick="navigateTo('roles'); closeSheet();">
+            <div class="menu-card-icon" style="background:rgba(116,90,242,0.12)">
+                <i class='bx bx-shield-quarter' style="color:var(--bs-purple)"></i>
+            </div>
+            <span class="menu-card-label">กำหนดสิทธิ์</span>
+            </button>
+            <button id="sidebarManu5" class="menu-card menu-item" data-page="departments" onclick="navigateTo('departments'); closeSheet();">
+            <div class="menu-card-icon" style="background:rgba(239,83,80,0.12)">
+                <i class='bx bx-buildings' style="color:var(--bs-red)"></i>
+            </div>
+            <span class="menu-card-label">จัดการฝ่าย</span>
+            </button>
+        </div>
+        </div>
+
+        <div id="sidebarGroup4" class="menu-category-group">
+        <p id="sidebarTopic4" class="text-[10.5px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2.5 px-1 category-title">ระบบ (System)</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+            <button id="sidebarManu6" class="menu-card menu-item" data-page="reports" onclick="navigateTo('reports'); closeSheet();">
+            <div class="menu-card-icon" style="background:rgba(5,190,138,0.12)">
+                <i class='bx bx-bar-chart-alt-2' style="color:var(--bs-green)"></i>
+            </div>
+            <span class="menu-card-label">รายงาน</span>
+            </button>
+            <button id="sidebarManu7" class="menu-card menu-item" data-page="settings" onclick="navigateTo('settings'); closeSheet();">
+            <div class="menu-card-icon" style="background:rgba(108,117,125,0.12)">
+                <i class='bx bxs-cog' style="color:#6c757d"></i>
+            </div>
+            <span class="menu-card-label">การตั้งค่า</span>
+            </button>
+        </div>
+        </div>
+
+    </div>
+
+    <div class="flex-shrink-0 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30 px-5 py-2.5">
+        <div class="flex items-center gap-3">
+        <div class="w-9 h-9 min-w-[36px] bg-gradient-to-tr from-[#05be8a] to-emerald-400 rounded-full flex items-center justify-center shadow-sm overflow-hidden">
+            <img id="sidebar-profile-img" src="" class="w-full h-full object-cover hidden">
+            <i id="sidebar-profile-icon" class="bx bxs-user text-white text-[14px]"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+            <p class="text-[13px] font-semibold text-gray-800 dark:text-white truncate" id="showadmin">Admin User</p>
+            <p class="text-[10px] text-gray-500 dark:text-gray-400 truncate" id="showemail">admin@example.com</p>
+        </div>
+        </div>
+    </div>
+
+    </div>
+    
+    <script>
+    function openDocFolder(key, label, btn) {
+      document.getElementById('docSubFolderTitle').textContent = label;
+      document.querySelectorAll('.doc-sub-grid').forEach(function(g){ g.classList.add('hidden'); });
+      var grid = document.getElementById('docSubGrid_' + key);
+      if (grid) grid.classList.remove('hidden');
+      document.getElementById('docSubFolderPanel').classList.remove('hidden');
+      document.getElementById('docSubFolderPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (typeof setDocFilter === 'function') setDocFilter(key);
+    }
+    function closeDocFolder() {
+      document.getElementById('docSubFolderPanel').classList.add('hidden');
+    }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
